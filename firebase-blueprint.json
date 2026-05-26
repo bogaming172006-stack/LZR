@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "App user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "pin": { "type": "string" },
+        "deviceId": { "type": "string" },
+        "lastActivity": { "type": "number" },
+        "isAdmin": { "type": "boolean" }
+      },
+      "required": ["id", "name", "pin", "isAdmin"]
+    },
+    "Ledger": {
+      "title": "Ledger",
+      "description": "Ledger config",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["SALE", "PURCHASE"] }
+      },
+      "required": ["id", "name", "type"]
+    },
+    "Party": {
+      "title": "Party",
+      "description": "A customer or supplier",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ledgerId": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "openingBalance": { "type": "number" },
+        "currentDue": { "type": "number" },
+        "lastTransaction": { "type": "number" },
+        "status": { "type": "string", "enum": ["Active", "Inactive"] }
+      },
+      "required": ["id", "name", "openingBalance", "currentDue", "status"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A ledger transaction",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "partyId": { "type": "string" },
+        "invoiceNo": { "type": "string" },
+        "type": { "type": "string", "enum": ["DEBIT", "CREDIT"] },
+        "amount": { "type": "number" },
+        "notes": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["id", "partyId", "type", "amount", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Users"
+    },
+    "/ledgers/{ledgerId}": {
+      "schema": { "$ref": "#/entities/Ledger" },
+      "description": "Ledgers"
+    },
+    "/parties/{partyId}": {
+      "schema": { "$ref": "#/entities/Party" },
+      "description": "Parties"
+    },
+    "/transactions/{transactionId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "Transactions"
+    }
+  }
+}
